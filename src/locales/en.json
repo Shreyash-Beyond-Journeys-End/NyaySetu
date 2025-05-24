@@ -1,0 +1,52 @@
+{
+  "app": {
+    "title": "Legal Rights Advisor",
+    "subtitle": "Know Your Rights, Protect Your Future"
+  },
+  "nav": {
+    "home": "Home",
+    "faq": "FAQ",
+    "about": "About",
+    "contact": "Contact",
+    "calculator": "Rights Calculator",
+    "documents": "Legal Documents",
+    "emergency": "Emergency Contacts"
+  },
+  "search": {
+    "placeholder": "Ask about your legal rights...",
+    "listening": "Listening... speak now",
+    "notSupported": "Voice search not supported",
+    "resultsFound": "Legal information found!",
+    "results": {
+      "domesticViolence": "Domestic Violence Protection",
+      "domesticViolenceContent": "Under the Protection of Women from Domestic Violence Act, 2005, you have the right to live free from violence...",
+      "workerRights": "Worker Rights and Labor Laws",
+      "workerRightsContent": "Every worker has fundamental rights including minimum wage, safe working conditions, and protection from exploitation..."
+    }
+  },
+  "chatbot": {
+    "title": "Legal Assistant",
+    "subtitle": "Ask me anything about Indian laws",
+    "welcome": "Hello! I'm here to help you understand your legal rights. What would you like to know?",
+    "inputPlaceholder": "Type your legal question...",
+    "sampleResponse": "Based on Indian law, here's what you need to know about your rights..."
+  },
+  "features": {
+    "calculator": {
+      "title": "Legal Rights Calculator",
+      "description": "Get personalized legal advice based on your situation"
+    },
+    "documents": {
+      "title": "Legal Document Templates",
+      "description": "Download essential legal forms and templates"
+    },
+    "emergency": {
+      "title": "Emergency Legal Contacts",
+      "description": "Find lawyers and legal aid near you"
+    },
+    "quiz": {
+      "title": "Legal Awareness Quiz",
+      "description": "Test and improve your knowledge of Indian laws"
+    }
+  }
+}
