@@ -4,7 +4,7 @@ import { MessageCircle, X, Send, Volume2, Loader, User, Bot } from 'lucide-react
 import { useAppStore } from '../../store/appStore';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
-import geminiService from '../../services/geminiService';
+import { useGemini } from '../../hooks/useGemini';
 import toast from 'react-hot-toast';
 
 const LegalChatbot = () => {
@@ -12,9 +12,9 @@ const LegalChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const { speak } = useTextToSpeech();
+  const { chatWithAI, loading } = useGemini();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -51,7 +51,7 @@ const LegalChatbot = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isTyping) return;
+    if (!inputValue.trim() || loading) return;
 
     const userMessage = {
       id: Date.now(),
@@ -62,38 +62,46 @@ const LegalChatbot = () => {
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
-    setIsTyping(true);
 
     try {
-      const response = await geminiService.chatResponse(
+      const response = await chatWithAI(
         userMessage.text,
-        language,
         messages.slice(-10) // Last 10 messages for context
       );
 
-      const botMessage = {
-        id: Date.now() + 1,
-        text: response,
-        sender: 'bot',
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, botMessage]);
+      if (response) {
+        const botMessage = {
+          id: Date.now() + 1,
+          text: response,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        throw new Error('No response received');
+      }
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessage = {
         id: Date.now() + 1,
-        text: language === 'hi' ? 'क्षमा करें, कुछ गलत हुआ है। कृपया पुनः प्रयास करें।' :
-              language === 'mr' ? 'माफ करा, काहीतरी चूक झाली आहे. कृपया पुन्हा प्रयत्न करा.' :
-              language === 'te' ? 'క్షమించండి, ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.' :
-              'Sorry, something went wrong. Please try again.',
+        text: getErrorMessage(),
         sender: 'bot',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
-      toast.error('Failed to get response. Please try again.');
-    } finally {
-      setIsTyping(false);
+    }
+  };
+
+  const getErrorMessage = () => {
+    switch (language) {
+      case 'hi':
+        return 'क्षमा करें, कुछ गलत हुआ है। कृपया पुनः प्रयास करें।';
+      case 'mr':
+        return 'माफ करा, काहीतरी चूक झाली आहे. कृपया पुन्हा प्रयत्न करा.';
+      case 'te':
+        return 'క్షమించండి, ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.';
+      default:
+        return 'Sorry, something went wrong. Please try again.';
     }
   };
 
@@ -233,7 +241,7 @@ const LegalChatbot = () => {
               ))}
               
               {/* Typing indicator */}
-              {isTyping && (
+              {loading && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -269,14 +277,14 @@ const LegalChatbot = () => {
                              'Type your question...'}
                   className="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
-                  disabled={isTyping}
+                  disabled={loading}
                 />
                 <button
                   onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || isTyping}
+                  disabled={!inputValue.trim() || loading}
                   className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isTyping ? (
+                  {loading ? (
                     <Loader className="h-4 w-4 animate-spin" />
                   ) : (
                     <Send className="h-4 w-4" />

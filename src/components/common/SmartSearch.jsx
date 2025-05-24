@@ -6,16 +6,17 @@ import { useAppStore } from '../../store/appStore';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useVoiceSearch } from '../../hooks/useVoiceSearch';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
-import geminiService from '../../services/geminiService';
+import { useGemini } from '../../hooks/useGemini';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 
 const SmartSearch = () => {
   const { t } = useTranslation();
-  const { language, searchResults, searchLoading, setSearchResults, setSearchLoading } = useAppStore();
+  const { language, searchResults, setSearchResults } = useAppStore();
   const [searchQuery, setSearchQuery] = useState('');
   const { transcript, listening, startListening, stopListening, resetTranscript } = useVoiceSearch();
   const { speak } = useTextToSpeech();
+  const { searchLegal, loading } = useGemini();
 
   React.useEffect(() => {
     if (transcript) {
@@ -29,16 +30,14 @@ const SmartSearch = () => {
       return;
     }
 
-    setSearchLoading(true);
     try {
-      const results = await geminiService.searchLegalQuery(query, language);
-      setSearchResults(results);
-      toast.success('Legal information found!');
+      const results = await searchLegal(query);
+      if (results) {
+        setSearchResults(results);
+      }
     } catch (error) {
       console.error('Search error:', error);
       toast.error('Failed to get legal information. Please try again.');
-    } finally {
-      setSearchLoading(false);
     }
   };
 
@@ -70,7 +69,7 @@ const SmartSearch = () => {
             </span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Know Your Rights, Protect Your Future
+            {t('app.subtitle')}
           </p>
         </motion.div>
 
@@ -106,13 +105,13 @@ const SmartSearch = () => {
                 
                 <Button
                   onClick={() => handleSearch()}
-                  disabled={searchLoading || !searchQuery.trim()}
+                  disabled={loading || !searchQuery.trim()}
                   className="px-8 py-4"
                 >
-                  {searchLoading ? (
+                  {loading ? (
                     <Loader className="h-5 w-5 animate-spin" />
                   ) : (
-                    'Search'
+                    t('search.button')
                   )}
                 </Button>
               </div>
@@ -127,7 +126,7 @@ const SmartSearch = () => {
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
                   <span className="text-sm text-blue-700 dark:text-blue-300">
-                    Listening... speak now
+                    {t('search.listening')}
                   </span>
                 </div>
                 {transcript && (

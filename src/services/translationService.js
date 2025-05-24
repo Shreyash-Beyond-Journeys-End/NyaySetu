@@ -1,8 +1,8 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
 class TranslationService {
   constructor() {
-    this.genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+    // Replace with your actual Gemini API key
+    this.apiKey = 'YOUR_ACTUAL_GEMINI_API_KEY_HERE';
+    this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
     
     // Static translations for common UI elements
     this.staticTranslations = {
@@ -244,8 +244,6 @@ class TranslationService {
     if (!text || targetLanguage === sourceLanguage) return text;
     
     try {
-      const model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
-      
       const languageNames = {
         'en': 'English',
         'hi': 'Hindi',
@@ -260,9 +258,35 @@ class TranslationService {
       
       Only provide the translation, no explanations.`;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      return response.text().trim();
+      const response = await fetch(`${this.baseUrl}?key=${this.apiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: prompt
+                }
+              ]
+            }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+        return data.candidates[0].content.parts[0].text.trim();
+      }
+      
+      return text;
     } catch (error) {
       console.error('Dynamic translation error:', error);
       return text; // Return original text if translation fails

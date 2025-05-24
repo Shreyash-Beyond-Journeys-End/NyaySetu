@@ -19,10 +19,12 @@ export const useGemini = () => {
     
     try {
       const result = await geminiService.searchLegalQuery(query, language);
+      toast.success('Legal information found!');
       return result;
     } catch (err) {
       setError(err.message);
-      toast.error('Failed to get legal information');
+      toast.error('Failed to get legal information. Please check your internet connection and try again.');
+      console.error('Gemini Search Error:', err);
       return null;
     } finally {
       setLoading(false);
@@ -42,7 +44,8 @@ export const useGemini = () => {
       return response;
     } catch (err) {
       setError(err.message);
-      toast.error('Failed to get AI response');
+      toast.error('Failed to get AI response. Please check your internet connection and try again.');
+      console.error('Gemini Chat Error:', err);
       return null;
     } finally {
       setLoading(false);
