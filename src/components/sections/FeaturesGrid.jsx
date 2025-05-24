@@ -24,50 +24,50 @@ const FeaturesGrid = () => {
   const features = [
     {
       icon: Search,
-      title: 'AI-Powered Legal Search',
-      description: 'Get comprehensive legal information using advanced AI technology',
+      title: t('features.ai_search_title'),
+      description: t('features.ai_search_desc'),
       color: 'from-blue-500 to-blue-600'
     },
     {
       icon: Calculator,
-      title: t('calculator.title'),
-      description: 'Calculate your legal rights based on specific situations',
+      title: t('features.calculator_title'),
+      description: t('features.calculator_desc'),
       color: 'from-green-500 to-green-600'
     },
     {
       icon: FileText,
-      title: t('documents.title'),
-      description: 'Download legal forms in multiple Indian languages',
+      title: t('features.documents_title'),
+      description: t('features.documents_desc'),
       color: 'from-purple-500 to-purple-600'
     },
     {
       icon: Phone,
-      title: t('emergency.title'),
-      description: 'Quick access to legal aid and emergency services',
+      title: t('features.emergency_title'),
+      description: t('features.emergency_desc'),
       color: 'from-red-500 to-red-600'
     },
     {
       icon: MessageSquare,
-      title: 'AI Legal Assistant',
-      description: 'Chat with AI for instant legal guidance and advice',
+      title: t('features.assistant_title'),
+      description: t('features.assistant_desc'),
       color: 'from-indigo-500 to-indigo-600'
     },
     {
       icon: Volume2,
-      title: 'Voice Support',
-      description: 'Ask questions and get answers using voice commands',
+      title: t('features.voice_title'),
+      description: t('features.voice_desc'),
       color: 'from-orange-500 to-orange-600'
     },
     {
       icon: Globe,
-      title: 'Multi-Language Support',
-      description: 'Available in English, Hindi, Marathi, and Telugu',
+      title: t('features.multi_lang_title'),
+      description: t('features.multi_lang_desc'),
       color: 'from-teal-500 to-teal-600'
     },
     {
       icon: Shield,
-      title: 'Privacy Protected',
-      description: 'Your legal queries are completely confidential and secure',
+      title: t('features.privacy_title'),
+      description: t('features.privacy_desc'),
       color: 'from-gray-500 to-gray-600'
     }
   ];
