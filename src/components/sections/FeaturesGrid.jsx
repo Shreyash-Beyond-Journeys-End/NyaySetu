@@ -5,13 +5,13 @@ import {
   Calculator, 
   FileText, 
   Phone, 
-  BookOpen, 
   MessageSquare, 
   Volume2,
   Globe,
-  Shield
+  Shield,
+  Search
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../../hooks/useTranslation';
 import Card from '../ui/Card';
 
 const FeaturesGrid = () => {
@@ -23,51 +23,51 @@ const FeaturesGrid = () => {
 
   const features = [
     {
-      icon: Calculator,
-      title: t('features.calculator.title'),
-      description: t('features.calculator.description'),
+      icon: Search,
+      title: 'AI-Powered Legal Search',
+      description: 'Get comprehensive legal information using advanced AI technology',
       color: 'from-blue-500 to-blue-600'
     },
     {
-      icon: FileText,
-      title: t('features.documents.title'),
-      description: t('features.documents.description'),
+      icon: Calculator,
+      title: t('calculator.title'),
+      description: 'Calculate your legal rights based on specific situations',
       color: 'from-green-500 to-green-600'
     },
     {
-      icon: Phone,
-      title: t('features.emergency.title'),
-      description: t('features.emergency.description'),
-      color: 'from-red-500 to-red-600'
+      icon: FileText,
+      title: t('documents.title'),
+      description: 'Download legal forms in multiple Indian languages',
+      color: 'from-purple-500 to-purple-600'
     },
     {
-      icon: BookOpen,
-      title: t('features.quiz.title'),
-      description: t('features.quiz.description'),
-      color: 'from-purple-500 to-purple-600'
+      icon: Phone,
+      title: t('emergency.title'),
+      description: 'Quick access to legal aid and emergency services',
+      color: 'from-red-500 to-red-600'
     },
     {
       icon: MessageSquare,
       title: 'AI Legal Assistant',
-      description: 'Get instant answers to your legal questions',
+      description: 'Chat with AI for instant legal guidance and advice',
       color: 'from-indigo-500 to-indigo-600'
     },
     {
       icon: Volume2,
       title: 'Voice Support',
-      description: 'Ask questions and get answers in your language',
+      description: 'Ask questions and get answers using voice commands',
       color: 'from-orange-500 to-orange-600'
     },
     {
       icon: Globe,
-      title: 'Multi-Language',
-      description: 'Available in Hindi, Marathi, and English',
+      title: 'Multi-Language Support',
+      description: 'Available in English, Hindi, Marathi, and Telugu',
       color: 'from-teal-500 to-teal-600'
     },
     {
       icon: Shield,
       title: 'Privacy Protected',
-      description: 'Your legal queries are completely confidential',
+      description: 'Your legal queries are completely confidential and secure',
       color: 'from-gray-500 to-gray-600'
     }
   ];
@@ -96,7 +96,7 @@ const FeaturesGrid = () => {
 
   return (
     <section className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -123,11 +123,13 @@ const FeaturesGrid = () => {
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="h-full hover:shadow-xl transition-shadow duration-300">
+              <Card className="h-full hover:shadow-xl transition-all duration-300 group">
                 <div className="p-6">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center mb-4`}>
+                  <motion.div 
+                    className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                  >
                     <feature.icon className="h-6 w-6 text-white" />
-                  </div>
+                  </motion.div>
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                     {feature.title}
                   </h3>

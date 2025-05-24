@@ -1,13 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Hero from '../components/sections/Hero';
+import SmartSearch from '../components/common/SmartSearch';
 import FeaturesGrid from '../components/sections/FeaturesGrid';
 import LegalRightsCalculator from '../components/sections/LegalRightsCalculator';
-import CaseStudies from '../components/sections/CaseStudies';
 import DocumentTemplates from '../components/sections/DocumentTemplates';
 import EmergencyContacts from '../components/sections/EmergencyContacts';
-import LegalQuiz from '../components/sections/LegalQuiz';
-import NewsUpdates from '../components/sections/NewsUpdates';
 
 const Home = () => {
   return (
@@ -15,15 +12,22 @@ const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      className="min-h-screen"
     >
-      <Hero />
+      {/* Smart Search Section (replaces hero) */}
+      <SmartSearch />
+      
+      {/* Features Grid */}
       <FeaturesGrid />
+      
+      {/* Legal Rights Calculator */}
       <LegalRightsCalculator />
-      <CaseStudies />
+      
+      {/* Document Templates */}
       <DocumentTemplates />
+      
+      {/* Emergency Contacts */}
       <EmergencyContacts />
-      <LegalQuiz />
-      <NewsUpdates />
     </motion.div>
   );
 };

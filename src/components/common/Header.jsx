@@ -1,12 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Menu, Scale, Search, Volume2, VolumeX } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-
+import { Menu, Scale } from 'lucide-react';
 import { useAppStore } from '../../store/appStore';
+import { useTranslation } from '../../hooks/useTranslation';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
-import VoiceSearch from './VoiceSearch';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -14,18 +12,19 @@ const Header = () => {
 
   return (
     <motion.header 
-      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md shadow-lg border-b border-blue-200 dark:border-gray-700 sticky top-0 z-50"
+      className="header-fixed bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-lg border-b border-blue-200 dark:border-gray-700 z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container-responsive">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Menu */}
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors lg:hidden"
+              aria-label="Toggle menu"
             >
               <Menu className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </button>
@@ -35,17 +34,55 @@ const Header = () => {
               whileHover={{ scale: 1.05 }}
             >
               <Scale className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                {t('app.title')}
-              </h1>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white language-transition">
+                  {t('app.title')}
+                </h1>
+              </div>
             </motion.div>
           </div>
 
-          {/* Search and Controls */}
-          <div className="flex items-center space-x-4">
-            <VoiceSearch />
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            <a 
+              href="#search" 
+              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Search
+            </a>
+            <a 
+              href="#calculator" 
+              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Calculator
+            </a>
+            <a 
+              href="#documents" 
+              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Documents
+            </a>
+            <a 
+              href="#emergency" 
+              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Emergency
+            </a>
+          </nav>
+
+          {/* Controls */}
+          <div className="flex items-center space-x-3">
             <LanguageSwitcher />
             <ThemeToggle />
+            
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors lg:hidden ml-2"
+              aria-label="Open menu"
+            >
+              <Menu className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+            </button>
           </div>
         </div>
       </div>

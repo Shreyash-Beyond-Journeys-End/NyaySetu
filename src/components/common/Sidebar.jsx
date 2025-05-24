@@ -8,15 +8,11 @@ import {
   MessageSquare, 
   Calculator, 
   FileText, 
-  Phone, 
-  BookOpen,
-  Newspaper,
-  Settings,
-  Shield,
-  Users
+  Phone,
+  X
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../store/appStore';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const Sidebar = () => {
   const { t } = useTranslation();
@@ -31,49 +27,52 @@ const Sidebar = () => {
   ];
 
   const toolItems = [
-    { path: '/calculator', icon: Calculator, label: t('nav.calculator') },
-    { path: '/documents', icon: FileText, label: t('nav.documents') },
-    { path: '/emergency', icon: Phone, label: t('nav.emergency') },
-    { path: '/quiz', icon: BookOpen, label: 'Legal Quiz' },
-    { path: '/news', icon: Newspaper, label: 'Legal News' }
+    { path: '#calculator', icon: Calculator, label: t('calculator.title'), scrollTo: 'calculator' },
+    { path: '#documents', icon: FileText, label: t('documents.title'), scrollTo: 'documents' },
+    { path: '#emergency', icon: Phone, label: t('emergency.title'), scrollTo: 'emergency' }
   ];
 
   const sidebarVariants = {
-    open: {
-      x: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 40
-      }
-    },
-    closed: {
-      x: -280,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 40
-      }
+    open: { x: 0, transition: { type: 'spring', stiffness: 300, damping: 40 } },
+    closed: { x: -280, transition: { type: 'spring', stiffness: 300, damping: 40 } }
+  };
+
+  const handleScrollTo = (elementId) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setSidebarOpen(false);
     }
   };
 
   const MenuItem = ({ item, isActive }) => (
-    <motion.div
-      whileHover={{ x: 8 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      <Link
-        to={item.path}
-        onClick={() => setSidebarOpen(false)}
-        className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-          isActive
-            ? 'bg-blue-600 text-white'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700'
-        }`}
-      >
-        <item.icon className="h-5 w-5" />
-        <span className="font-medium">{item.label}</span>
-      </Link>
+    <motion.div whileHover={{ x: 8 }} whileTap={{ scale: 0.95 }}>
+      {item.scrollTo ? (
+        <button
+          onClick={() => handleScrollTo(item.scrollTo)}
+          className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors text-left ${
+            isActive
+              ? 'bg-blue-600 text-white'
+              : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700'
+          }`}
+        >
+          <item.icon className="h-5 w-5" />
+          <span className="font-medium">{item.label}</span>
+        </button>
+      ) : (
+        <Link
+          to={item.path}
+          onClick={() => setSidebarOpen(false)}
+          className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+            isActive
+              ? 'bg-blue-600 text-white'
+              : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700'
+          }`}
+        >
+          <item.icon className="h-5 w-5" />
+          <span className="font-medium">{item.label}</span>
+        </Link>
+      )}
     </motion.div>
   );
 
@@ -96,9 +95,19 @@ const Sidebar = () => {
       <motion.aside
         variants={sidebarVariants}
         animate={sidebarOpen ? 'open' : 'closed'}
-        className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-70 bg-white dark:bg-gray-800 shadow-lg z-40 overflow-y-auto"
+        className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-70 bg-white dark:bg-gray-800 shadow-xl z-40 overflow-y-auto border-r border-gray-200 dark:border-gray-700"
       >
         <div className="p-6">
+          {/* Close button for mobile */}
+          <div className="flex justify-end mb-4 lg:hidden">
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            >
+              <X className="h-5 w-5 text-gray-500" />
+            </button>
+          </div>
+
           {/* Main Navigation */}
           <div className="mb-8">
             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
@@ -125,30 +134,9 @@ const Sidebar = () => {
                 <MenuItem
                   key={item.path}
                   item={item}
-                  isActive={location.pathname === item.path}
+                  isActive={false}
                 />
               ))}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-              Quick Actions
-            </h3>
-            <div className="space-y-2">
-              <button className="w-full flex items-center space-x-3 p-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                <Shield className="h-5 w-5" />
-                <span>Privacy Policy</span>
-              </button>
-              <button className="w-full flex items-center space-x-3 p-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                <Users className="h-5 w-5" />
-                <span>Community</span>
-              </button>
-              <button className="w-full flex items-center space-x-3 p-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                <Settings className="h-5 w-5" />
-                <span>Settings</span>
-              </button>
             </div>
           </div>
         </div>
