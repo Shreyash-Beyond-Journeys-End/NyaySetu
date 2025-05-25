@@ -183,10 +183,7 @@ const Contact = () => {
             {t('nav.contact')}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            {language === 'hi' ? 'अपने कानूनी अधिकारों के बारे में प्रश्न हैं? हम यहाँ मदद करने के लिए हैं।' :
-             language === 'mr' ? 'तुमच्या कायदेशीर हक्कांबद्दल प्रश्न आहेत? आम्ही मदतीसाठी येथे आहोत.' :
-             language === 'te' ? 'మీ న్యాయ హక్కుల గురించి ప్రశ్నలు ఉన్నాయా? మేము సహాయం చేయడానికి ఇక్కడ ఉన్నాము.' :
-             'Have questions about your legal rights? We\'re here to help.'}
+            {t('contact.subtitle')}
           </p>
         </motion.div>
 
@@ -282,10 +279,7 @@ const Contact = () => {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      {language === 'hi' ? 'ईमेल पता *' :
-                       language === 'mr' ? 'ईमेल पत्ता *' :
-                       language === 'te' ? 'ఇమెయిల్ చిరునామా *' :
-                       'Email Address *'}
+                      {t('contact.form.email.label')}
                     </label>
                     <input
                       type="email"
@@ -294,10 +288,7 @@ const Contact = () => {
                       onChange={handleInputChange}
                       required
                       className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder={language === 'hi' ? 'अपना ईमेल दर्ज करें' :
-                                  language === 'mr' ? 'तुमचा ईमेल टाका' :
-                                  language === 'te' ? 'మీ ఇమెయిల్ నమోదు చేయండి' :
-                                  'Enter your email'}
+                      placeholder={t('contact.form.email.placeholder')}
                     />
                   </div>
                 </div>
@@ -305,10 +296,7 @@ const Contact = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      {language === 'hi' ? 'फोन नंबर' :
-                       language === 'mr' ? 'फोन नंबर' :
-                       language === 'te' ? 'ఫోన్ నంబర్' :
-                       'Phone Number'}
+                      {t('contact.form.phone.label')}
                     </label>
                     <input
                       type="tel"
@@ -316,19 +304,13 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder={language === 'hi' ? 'अपना फोन नंबर दर्ज करें' :
-                                  language === 'mr' ? 'तुमचा फोन नंबर टाका' :
-                                  language === 'te' ? 'మీ ఫోన్ నంబర్ నమోదు చేయండి' :
-                                  'Enter your phone number'}
+                      placeholder={t('contact.form.phone.placeholder')}
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      {language === 'hi' ? 'विषय *' :
-                       language === 'mr' ? 'विषय *' :
-                       language === 'te' ? 'విషయం *' :
-                       'Subject *'}
+                      {t('contact.form.subject.label')}
                     </label>
                     <select
                       name="subject"
@@ -338,10 +320,7 @@ const Contact = () => {
                       className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">
-                        {language === 'hi' ? 'एक विषय चुनें' :
-                         language === 'mr' ? 'एक विषय निवडा' :
-                         language === 'te' ? 'ఒక విషయాన్ని ఎంచుకోండి' :
-                         'Select a subject'}
+                        {t('contact.form.subject.placeholder')}
                       </option>
                       {(subjects[language] || subjects.en).map((subject, index) => (
                         <option key={index} value={subject}>
@@ -354,10 +333,7 @@ const Contact = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {language === 'hi' ? 'संदेश *' :
-                     language === 'mr' ? 'संदेश *' :
-                     language === 'te' ? 'సందేశం *' :
-                     'Message *'}
+                    {t('contact.form.message.label')}
                   </label>
                   <textarea
                     name="message"
@@ -366,10 +342,7 @@ const Contact = () => {
                     required
                     rows={6}
                     className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder={language === 'hi' ? 'अपनी कानूनी चिंता या प्रश्न का वर्णन करें...' :
-                                language === 'mr' ? 'तुमची कायदेशीर चिंता किंवा प्रश्नाचे वर्णन करा...' :
-                                language === 'te' ? 'మీ న్యాయ ఆందోళన లేదా ప్రశ్నను వివరించండి...' :
-                                'Describe your legal concern or question...'}
+                    placeholder={t('contact.form.message.placeholder')}
                   />
                 </div>
 
@@ -385,14 +358,8 @@ const Contact = () => {
                   )}
                   <span>
                     {isSubmitting 
-                      ? (language === 'hi' ? 'भेजा जा रहा है...' :
-                         language === 'mr' ? 'पाठवत आहे...' :
-                         language === 'te' ? 'పంపుతోంది...' :
-                         'Sending...')
-                      : (language === 'hi' ? 'संदेश भेजें' :
-                         language === 'mr' ? 'संदेश पाठवा' :
-                         language === 'te' ? 'సందేశం పంపండి' :
-                         'Send Message')
+                      ? t('contact.form.submitting')
+                      : t('contact.form.submit')
                     }
                   </span>
                 </Button>

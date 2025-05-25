@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -15,32 +15,32 @@ import { useAppStore } from '../../store/appStore';
 import { useTranslation } from '../../hooks/useTranslation';
 
 const Sidebar = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const location = useLocation();
   const { sidebarOpen, setSidebarOpen } = useAppStore();
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { path: '/', icon: Home, label: t('nav.home') },
     { path: '/faq', icon: HelpCircle, label: t('nav.faq') },
     { path: '/about', icon: Info, label: t('nav.about') },
     { path: '/contact', icon: MessageSquare, label: t('nav.contact') }
-  ];
+  ], [t, language]);
 
-  const toolItems = [
-    { path: '#calculator', icon: Calculator, label: t('calculator.title'), scrollTo: 'calculator' },
-    { path: '#documents', icon: FileText, label: t('documents.title'), scrollTo: 'documents' },
-    { path: '#emergency', icon: Phone, label: t('emergency.title'), scrollTo: 'emergency' }
-  ];
+  const toolItems = useMemo(() => [
+    { path: '/#calculator', icon: Calculator, label: t('calculator.title'), scrollTo: 'calculator-section' },
+    { path: '/#documents', icon: FileText, label: t('documents.title'), scrollTo: 'documents' },
+    { path: '/#emergency', icon: Phone, label: t('emergency.title'), scrollTo: 'emergency' }
+  ], [t, language]);
 
   const sidebarVariants = {
-    open: { x: 0, transition: { type: 'spring', stiffness: 300, damping: 40 } },
-    closed: { x: -280, transition: { type: 'spring', stiffness: 300, damping: 40 } }
+    open: { x: 0 },
+    closed: { x: '-100%' }
   };
 
   const handleScrollTo = (elementId) => {
     const element = document.getElementById(elementId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setSidebarOpen(false);
     }
   };
@@ -77,71 +77,76 @@ const Sidebar = () => {
   );
 
   return (
-    <>
-      {/* Overlay */}
-      <AnimatePresence>
-        {sidebarOpen && (
+    <AnimatePresence>
+      {sidebarOpen && (
+        <>
+          {/* Overlay */}
           <motion.div
+            key="sidebar-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+            className="fixed inset-0 bg-black bg-opacity-50 z-30"
           />
-        )}
-      </AnimatePresence>
 
-      {/* Sidebar */}
-      <motion.aside
-        variants={sidebarVariants}
-        animate={sidebarOpen ? 'open' : 'closed'}
-        className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-70 bg-white dark:bg-gray-800 shadow-xl z-40 overflow-y-auto border-r border-gray-200 dark:border-gray-700"
-      >
-        <div className="p-6">
-          {/* Close button for mobile */}
-          <div className="flex justify-end mb-4 lg:hidden">
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
-          </div>
+          {/* Sidebar */}
+          <motion.aside
+            key="sidebar-aside"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={sidebarVariants}
+            transition={{ type: 'tween', duration: 0.3 }}
+            className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-gray-800 shadow-xl z-40 overflow-y-auto border-r border-gray-200 dark:border-gray-700"
+          >
+            <div className="p-4">
+              {/* Close button */}
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                >
+                  <X className="h-5 w-5 text-gray-500" />
+                </button>
+              </div>
 
-          {/* Main Navigation */}
-          <div className="mb-8">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-              Navigation
-            </h3>
-            <div className="space-y-2">
-              {menuItems.map((item) => (
-                <MenuItem
-                  key={item.path}
-                  item={item}
-                  isActive={location.pathname === item.path}
-                />
-              ))}
+              {/* Main Navigation */}
+              <div className="mb-8">
+                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                  Navigation
+                </h3>
+                <div className="space-y-2">
+                  {menuItems.map((item) => (
+                    <MenuItem
+                      key={item.path}
+                      item={item}
+                      isActive={location.pathname === item.path}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Legal Tools */}
+              <div className="mb-8">
+                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                  Legal Tools
+                </h3>
+                <div className="space-y-2">
+                  {toolItems.map((item) => (
+                    <MenuItem
+                      key={item.path}
+                      item={item}
+                      isActive={false}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-
-          {/* Legal Tools */}
-          <div className="mb-8">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-              Legal Tools
-            </h3>
-            <div className="space-y-2">
-              {toolItems.map((item) => (
-                <MenuItem
-                  key={item.path}
-                  item={item}
-                  isActive={false}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.aside>
-    </>
+          </motion.aside>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 

@@ -10,114 +10,70 @@ const About = () => {
   const values = [
     {
       icon: Scale,
-      title: language === 'hi' ? 'सभी के लिए न्याय' :
-             language === 'mr' ? 'सर्वांसाठी न्याय' :
-             language === 'te' ? 'అందరికీ న్याయం' :
-             'Justice for All',
-      description: language === 'hi' ? 'हम मानते हैं कि हर व्यक्ति को उनकी पृष्ठभूमि या शिक्षा की परवाह किए बिना कानूनी ज्ञान और न्याय तक पहुंच का अधिकार है।' :
-                   language === 'mr' ? 'आम्ही मानतो की प्रत्येक व्यक्तीला त्यांची पार्श्वभूमी किंवा शिक्षणाची पर्वा न करता कायदेशीर ज्ञान आणि न्यायाचा अधिकार आहे.' :
-                   language === 'te' ? 'ప్రతి వ్యక్తికి వారి నేపథ్యం లేదా విద్య లేకుండా న్యాయ జ్ఞానం మరియు న్యాయానికి ప్రాప్యత అధికారం ఉందని మేము నమ్ముతున్నాము.' :
-                   'We believe every person deserves access to legal knowledge and justice, regardless of their background or education.'
+      title: t('about.values.justice.title'),
+      description: t('about.values.justice.description')
     },
     {
       icon: Users,
-      title: language === 'hi' ? 'समुदाय पहले' :
-             language === 'mr' ? 'समुदाय प्रथम' :
-             language === 'te' ? 'కమ్యూనిటీ మొదట' :
-             'Community First',
-      description: language === 'hi' ? 'हमारा फोकस ग्रामीण और वंचित समुदायों को आवश्यक कानूनी जानकारी के साथ सशक्त बनाने पर है।' :
-                   language === 'mr' ? 'आमचे लक्ष ग्रामीण आणि वंचित समुदायांना आवश्यक कायदेशीर माहितीसह सक्षम करण्यावर आहे.' :
-                   language === 'te' ? 'గ్రామీణ మరియు వెనుకబడిన కమ్యూనిటీలను అవసరమైన న్యాయ సమాచారంతో శక్తివంతం చేయడంలో మా దృష్టి ఉంది.' :
-                   'Our focus is on empowering rural and underserved communities with essential legal information.'
+      title: t('about.values.community.title'),
+      description: t('about.values.community.description')
     },
     {
       icon: Shield,
-      title: language === 'hi' ? 'गोपनीयता और सुरक्षा' :
-             language === 'mr' ? 'गोपनीयता आणि सुरक्षा' :
-             language === 'te' ? 'గోప్యత & భద్రత' :
-             'Privacy & Security',
-      description: language === 'hi' ? 'आपकी कानूनी पूछताछ और व्यक्तिगत जानकारी पूरी तरह से गोपनीय और सुरक्षित है।' :
-                   language === 'mr' ? 'तुमच्या कायदेशीर चौकशी आणि वैयक्तिक माहिती पूर्णपणे गोपनीय आणि सुरक्षित आहे.' :
-                   language === 'te' ? 'మీ న్యాయ ప్రశ్నలు మరియు వ్యక్తిగత సమాచారం పూర్తిగా రహస్యంగా మరియు సురక్షితంగా ఉంటాయి.' :
-                   'Your legal queries and personal information are completely confidential and secure.'
+      title: t('about.values.privacy.title'),
+      description: t('about.values.privacy.description')
     },
     {
       icon: Heart,
-      title: language === 'hi' ? 'दयालु सहायता' :
-             language === 'mr' ? 'दयाळू समर्थन' :
-             language === 'te' ? 'దయతో మద్దతు' :
-             'Compassionate Support',
-      description: language === 'hi' ? 'हम न्याय की तलाश करने वालों की चुनौतियों को समझते हुए सहानुभूति के साथ कानूनी मार्गदर्शन प्रदान करते हैं।' :
-                   language === 'mr' ? 'आम्ही न्यायाच्या शोधात असलेल्यांच्या आव्हानांना समजून सहानुभूतीसह कायदेशीर मार्गदर्शन देतो.' :
-                   language === 'te' ? 'న్యాయం కోరుకునే వారి సవాళ్లను అర్థం చేసుకుని సానుభూతితో న్యాయ మార్గదర్శకత్వం అందిస్తాము.' :
-                   'We provide legal guidance with empathy, understanding the challenges faced by those seeking justice.'
+      title: t('about.values.compassion.title'),
+      description: t('about.values.compassion.description')
+    },
+    {
+      icon: Target,
+      title: t('about.values.personalized.title'),
+      description: t('about.values.personalized.description')
+    },
+    {
+      icon: Award,
+      title: t('about.values.verified.title'),
+      description: t('about.values.verified.description')
     }
   ];
 
-  const stats = [
-    {
-      number: '10K+',
-      label: language === 'hi' ? 'लोगों की मदद की' :
-             language === 'mr' ? 'लोकांना मदत केली' :
-             language === 'te' ? 'ప్రజలకు సహాయం చేశాము' :
-             'People Helped'
-    },
-    {
-      number: '500+',
-      label: language === 'hi' ? 'कानूनी मामले' :
-             language === 'mr' ? 'कायदेशीर प्रकरणे' :
-             language === 'te' ? 'న్యాయ కేసులు' :
-             'Legal Cases'
-    },
-    {
-      number: '24/7',
-      label: language === 'hi' ? 'सहायता उपलब्ध' :
-             language === 'mr' ? 'सपोर्ट उपलब्ध' :
-             language === 'te' ? 'మద్దతు అందుబాటులో' :
-             'Support Available'
-    },
-    {
-      number: '4',
-      label: language === 'hi' ? 'भाषाओं में उपलब्ध' :
-             language === 'mr' ? 'भाषांमध्ये उपलब्ध' :
-             language === 'te' ? 'భాషలలో అందుబాటులో' :
-             'Languages Supported'
-    }
-  ];
+  // const stats = [
+  //   {
+  //     number: '10K+',
+  //     label: t('about.stats.people_helped')
+  //   },
+  //   {
+  //     number: '500+',
+  //     label: t('about.stats.legal_cases')
+  //   },
+  //   {
+  //     number: '24/7',
+  //     label: t('about.stats.support_available')
+  //   },
+  //   {
+  //     number: '4',
+  //     label: t('about.stats.languages_available')
+  //   }
+  // ];
 
   const features = [
     {
       icon: Globe,
-      title: language === 'hi' ? 'बहुभाषी समर्थन' :
-             language === 'mr' ? 'बहुभाषिक समर्थन' :
-             language === 'te' ? 'బహుభాష మద్దతు' :
-             'Multi-Language Support',
-      description: language === 'hi' ? 'अंग्रेजी, हिंदी, मराठी और तेलुगु में उपलब्ध' :
-                   language === 'mr' ? 'इंग्रजी, हिंदी, मराठी आणि तेलुगूमध्ये उपलब्ध' :
-                   language === 'te' ? 'ఇంగ్లీష్, హిందీ, మరాఠీ మరియు తెలుగులో అందుబాటులో' :
-                   'Available in English, Hindi, Marathi, and Telugu'
+      title: t('about.features.multilang.title'),
+      description: t('about.features.multilang.description')
     },
     {
       icon: BookOpen,
-      title: language === 'hi' ? 'AI-संचालित खोज' :
-             language === 'mr' ? 'AI-चालित शोध' :
-             language === 'te' ? 'AI-శక్తితో శోధన' :
-             'AI-Powered Search',
-      description: language === 'hi' ? 'उन्नत AI तकनीक का उपयोग करके व्यापक कानूनी जानकारी प्राप्त करें' :
-                   language === 'mr' ? 'प्रगत AI तंत्रज्ञानाचा वापर करून व्यापक कायदेशीर माहिती मिळवा' :
-                   language === 'te' ? 'అధునాతన AI సాంకేతికతను ఉపయోగించి సమగ్ర న్యాయ సమాచారం పొందండి' :
-                   'Get comprehensive legal information using advanced AI technology'
+      title: t('about.features.ai_search.title'),
+      description: t('about.features.ai_search.description')
     },
     {
       icon: Target,
-      title: language === 'hi' ? 'व्यक्तिगत सलाह' :
-             language === 'mr' ? 'वैयक्तिक सल्ला' :
-             language === 'te' ? 'వ్యక్తిగత సలహా' :
-             'Personalized Guidance',
-      description: language === 'hi' ? 'आपकी विशिष्ट स्थिति के आधार पर व्यक्तिगत कानूनी सलाह' :
-                   language === 'mr' ? 'तुमच्या विशिष्ट परिस्थितीवर आधारित वैयक्तिक कायदेशीर सल्ला' :
-                   language === 'te' ? 'మీ ప్రత్యేక పరిస్థితి ఆధారంగా వ్యక్తిగత న్యాయ సలహా' :
-                   'Get personalized legal advice based on your specific situation'
+      title: t('about.features.personalized.title'),
+      description: t('about.features.personalized.description')
     },
     {
       icon: Award,
@@ -144,20 +100,14 @@ const About = () => {
         >
           <Scale className="h-16 w-16 text-blue-600 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            {language === 'hi' ? 'कानूनी अधिकार सलाहकार के बारे में' :
-             language === 'mr' ? 'कायदेशीर हक्क सल्लागार बद्दल' :
-             language === 'te' ? 'న్యాయ హక్కుల సలహాదారుని గురించి' :
-             'About Legal Rights Advisor'}
+            {t('about.title')}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {language === 'hi' ? 'भारत के हर नागरिक को सुलभ कानूनी ज्ञान और उनके अधिकारों को समझने और सुरक्षित करने के लिए उपकरण प्रदान करना।' :
-             language === 'mr' ? 'प्रत्येक भारतीय नागरिकाला त्यांचे हक्क समजून घेण्यासाठी आणि संरक्षणासाठी सुलभ कायदेशीर ज्ञान आणि साधने प्रदान करणे.' :
-             language === 'te' ? 'ప్రతి భారతీయ పౌరుడికి వారి హక్కులను అర్థం చేసుకోవడానికి మరియు రక్షించుకోవడానికి అందుబాటులో ఉన్న న్యాయ జ్ఞానం మరియు సాధనాలను అందించడం.' :
-             'Empowering every Indian citizen with accessible legal knowledge and tools to understand and protect their rights.'}
+            {t('about.description')}
           </p>
         </motion.div>
 
-        {/* Stats */}
+        {/* Stats
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -178,7 +128,7 @@ const About = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* Mission Section */}
         <motion.div

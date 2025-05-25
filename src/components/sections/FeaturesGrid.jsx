@@ -104,13 +104,13 @@ const FeaturesGrid = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Powerful Features for
+            {t('features.section_title_part1')}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {' '}Legal Empowerment
+              {' '}{t('features.section_title_part2')}
             </span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Access comprehensive legal tools designed specifically for Indian laws and rights
+            {t('features.section_subtitle')}
           </p>
         </motion.div>
 

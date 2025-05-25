@@ -56,25 +56,15 @@ function App() {
       <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-gray-900' : 'bg-white'} transition-colors duration-300`}>
         <Header />
         
-        <motion.div 
-          className="main-content"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex">
-            <Sidebar />
-            
-            <main className="flex-1 min-h-screen">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
-            </main>
-          </div>
-        </motion.div>
+        <Sidebar />
+        <main className="min-h-screen pt-16">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </main>
 
         <LegalChatbot />
         

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, ChevronRight, AlertCircle } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../../hooks/useTranslation';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 
@@ -11,38 +11,38 @@ const LegalRightsCalculator = () => {
   const [formData, setFormData] = useState({});
   const [results, setResults] = useState(null);
 
-  const categories = [
+  const categories = useMemo(() => [
     {
       id: 'labor',
-      title: 'Labor Rights',
-      description: 'Calculate minimum wage, overtime, and worker benefits',
+      title: t('calculator.labor_title'),
+      description: t('calculator.labor_desc'),
       fields: [
-        { name: 'workHours', label: 'Daily Work Hours', type: 'number' },
-        { name: 'salary', label: 'Monthly Salary (₹)', type: 'number' },
-        { name: 'workDays', label: 'Work Days per Month', type: 'number' }
+        { name: 'workHours', label: t('calculator.labor_field_workHours'), type: 'number' },
+        { name: 'salary', label: t('calculator.labor_field_salary'), type: 'number' },
+        { name: 'workDays', label: t('calculator.labor_field_workDays'), type: 'number' }
       ]
     },
     {
       id: 'property',
-      title: 'Property Rights',
-      description: 'Understand property ownership and inheritance laws',
+      title: t('calculator.property_title'),
+      description: t('calculator.property_desc'),
       fields: [
-        { name: 'propertyValue', label: 'Property Value (₹)', type: 'number' },
-        { name: 'ownershipType', label: 'Ownership Type', type: 'select', options: ['Individual', 'Joint', 'Inherited'] },
-        { name: 'location', label: 'Property Location', type: 'text' }
+        { name: 'propertyValue', label: t('calculator.property_field_propertyValue'), type: 'number' },
+        { name: 'ownershipType', label: t('calculator.property_field_ownershipType'), type: 'select', options: [t('calculator.property_option_individual'), t('calculator.property_option_joint'), t('calculator.property_option_inherited')] },
+        { name: 'location', label: t('calculator.property_field_location'), type: 'text' }
       ]
     },
     {
       id: 'consumer',
-      title: 'Consumer Rights',
-      description: 'Know your rights as a consumer and compensation claims',
+      title: t('calculator.consumer_title'),
+      description: t('calculator.consumer_desc'),
       fields: [
-        { name: 'purchaseAmount', label: 'Purchase Amount (₹)', type: 'number' },
-        { name: 'issueType', label: 'Issue Type', type: 'select', options: ['Defective Product', 'Service Issue', 'Overcharging'] },
-        { name: 'purchaseDate', label: 'Purchase Date', type: 'date' }
+        { name: 'purchaseAmount', label: t('calculator.consumer_field_purchaseAmount'), type: 'number' },
+        { name: 'issueType', label: t('calculator.consumer_field_issueType'), type: 'select', options: [t('calculator.consumer_option_defective'), t('calculator.consumer_option_service'), t('calculator.consumer_option_overcharging')] },
+        { name: 'purchaseDate', label: t('calculator.consumer_field_purchaseDate'), type: 'date' }
       ]
     }
-  ];
+  ], [t]);
 
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -72,9 +72,9 @@ const LegalRightsCalculator = () => {
           overtimeRate: Math.round(overtimeRate),
           isAboveMinimum: (formData.salary / formData.workDays) >= minimumWage,
           recommendations: [
-            'You are entitled to overtime pay for work beyond 8 hours',
-            'Ensure you receive ESI and PF benefits',
-            'Keep records of your working hours'
+            t('calculator.recommendations.labor.overtime'),
+            t('calculator.recommendations.labor.benefits'),
+            t('calculator.recommendations.labor.records')
           ]
         };
         break;
@@ -88,9 +88,9 @@ const LegalRightsCalculator = () => {
           registrationFee: Math.round(registrationFee),
           totalCost: Math.round(stampDuty + registrationFee),
           recommendations: [
-            'Ensure clear title verification before purchase',
-            'Register the property within 4 months',
-            'Keep all original documents safe'
+            t('calculator.recommendations.property.title'),
+            t('calculator.recommendations.property.registration'),
+            t('calculator.recommendations.property.documents')
           ]
         };
         break;
@@ -102,9 +102,9 @@ const LegalRightsCalculator = () => {
           compensationAmount: Math.round(compensationAmount),
           timeLimit: '2 years from purchase date',
           recommendations: [
-            'File complaint within 2 years of purchase',
-            'Keep purchase receipts and warranty cards',
-            'Document the defect with photos/videos'
+            t('calculator.recommendations.consumer.complaint'),
+            t('calculator.recommendations.consumer.receipts'),
+            t('calculator.recommendations.consumer.documentation')
           ]
         };
         break;
@@ -126,10 +126,10 @@ const LegalRightsCalculator = () => {
         >
           <Calculator className="h-16 w-16 text-blue-600 mx-auto mb-6" />
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Legal Rights Calculator
+            {t('calculator.title')}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            Get personalized legal advice based on your specific situation
+            {t('calculator.subtitle')}
           </p>
         </motion.div>
 
@@ -157,7 +157,7 @@ const LegalRightsCalculator = () => {
                       {category.description}
                     </p>
                     <div className="flex items-center text-blue-600 font-medium">
-                      <span>Calculate Now</span>
+                      <span>{t('calculator.calculate_now')}</span>
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </div>
                   </div>
@@ -181,7 +181,7 @@ const LegalRightsCalculator = () => {
                     variant="outline"
                     onClick={() => setSelectedCategory('')}
                   >
-                    Back
+                    {t('button.back')}
                   </Button>
                 </div>
 
@@ -210,7 +210,7 @@ const LegalRightsCalculator = () => {
                           value={formData[field.name] || ''}
                           onChange={(e) => handleInputChange(field.name, e.target.value)}
                           className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                          placeholder={`Enter ${field.label}`}
+                          placeholder={t('calculator.enter_field', { field: field.label })}
                         />
                       )}
                     </div>
@@ -223,7 +223,7 @@ const LegalRightsCalculator = () => {
                     className="w-full"
                     disabled={Object.keys(formData).length === 0}
                   >
-                    Calculate My Rights
+                    {t('calculator.button')}
                   </Button>
                 </div>
               </div>
@@ -238,7 +238,7 @@ const LegalRightsCalculator = () => {
                   <div className="p-6">
                     <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                       <AlertCircle className="h-5 w-5 text-blue-600 mr-2" />
-                      Your Legal Rights Analysis
+                      {t('calculator.analysis_title')}
                     </h4>
 
                     <div className="space-y-4">
@@ -262,7 +262,7 @@ const LegalRightsCalculator = () => {
                     {results.recommendations && (
                       <div className="mt-6">
                         <h5 className="font-semibold text-gray-900 dark:text-white mb-3">
-                          Legal Recommendations:
+                          {t('calculator.recommendations')}
                         </h5>
                         <ul className="space-y-2">
                           {results.recommendations.map((recommendation, index) => (
