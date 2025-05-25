@@ -86,7 +86,7 @@ const SmartSearch = () => {
     : (searchResults && Object.keys(searchResults).length > 0 ? searchResults : null);
 
   return (
-    <section className="py-16 px-4">
+    <section id="search" className="py-16 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Search Header */}
         <motion.div

@@ -54,6 +54,10 @@ export const useAppStore = create((set) => ({
   sidebarOpen: false,
   setSidebarOpen: (open) => set({ sidebarOpen: open }),
   
+  // Chatbot State
+  chatbotOpen: false,
+  setChatbotOpen: (open) => set({ chatbotOpen: open }),
+  
   // Search
   searchResults: [],
   searchLoading: false,

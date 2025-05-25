@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const LegalChatbot = () => {
   const { t, language } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const { chatbotOpen, setChatbotOpen } = useAppStore();
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
@@ -26,7 +26,7 @@ const LegalChatbot = () => {
 
   useEffect(() => {
     // Initialize with welcome message
-    if (isOpen && messages.length === 0) {
+    if (chatbotOpen && messages.length === 0) {
       const welcomeMessage = {
         id: Date.now(),
         text: getWelcomeMessage(),
@@ -35,7 +35,7 @@ const LegalChatbot = () => {
       };
       setMessages([welcomeMessage]);
     }
-  }, [isOpen, language]);
+  }, [chatbotOpen, language]);
 
   const getWelcomeMessage = () => {
     switch (language) {
@@ -122,7 +122,7 @@ const LegalChatbot = () => {
     <>
       {/* Chat Toggle Button */}
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setChatbotOpen(!chatbotOpen)}
         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg z-50 flex items-center justify-center"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -131,7 +131,7 @@ const LegalChatbot = () => {
         transition={{ delay: 1 }}
       >
         <AnimatePresence mode="wait">
-          {isOpen ? (
+          {chatbotOpen ? (
             <motion.div
               key="close"
               initial={{ rotate: -90, opacity: 0 }}
@@ -157,7 +157,7 @@ const LegalChatbot = () => {
 
       {/* Chat Window */}
       <AnimatePresence>
-        {isOpen && (
+        {chatbotOpen && (
           <motion.div
             initial={{ opacity: 0, y: 100, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -180,7 +180,7 @@ const LegalChatbot = () => {
                     Clear
                   </button>
                   <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => setChatbotOpen(false)}
                     className="p-2 hover:bg-blue-700 rounded-lg transition-colors"
                   >
                     <X className="h-4 w-4" />

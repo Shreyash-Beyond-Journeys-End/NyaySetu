@@ -5,11 +5,22 @@ import { useAppStore } from '../../store/appStore';
 import { useTranslation } from '../../hooks/useTranslation';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { t } = useTranslation();
   const { setSidebarOpen, sidebarOpen } = useAppStore();
+  const navigate = useNavigate();
+
+  const handleNavigation = (section) => {
+    navigate('/');
+    setTimeout(() => {
+      const element = document.getElementById(section);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
 
   return (
     <motion.header 
@@ -30,47 +41,46 @@ const Header = () => {
               <Menu className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </button>
             
-            <motion.div 
+            <motion.button 
               className="flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
+              onClick={() => navigate('/')}
             >
-              <Link to="/" className="flex items-center space-x-2">
-                <Scale className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                <div className="hidden sm:block">
-                  <h1 className="text-xl font-bold text-gray-900 dark:text-white language-transition">
-                    {t('app.title')}
-                  </h1>
-                </div>
-              </Link>
-            </motion.div>
+              <Scale className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white language-transition">
+                  {t('app.title')}
+                </h1>
+              </div>
+            </motion.button>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-6">
-            <a 
-              href="#search" 
+            <button 
+              onClick={() => handleNavigation('search')}
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {t('nav.search')}
-            </a>
-            <a 
-              href="#calculator" 
+            </button>
+            <button 
+              onClick={() => handleNavigation('calculator-section')}
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {t('calculator.title')}
-            </a>
-            <a 
-              href="#documents" 
+            </button>
+            <button 
+              onClick={() => handleNavigation('documents')}
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {t('documents.title')}
-            </a>
-            <a 
-              href="#emergency" 
+            </button>
+            <button 
+              onClick={() => handleNavigation('emergency')}
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {t('emergency.title')}
-            </a>
+            </button>
           </nav>
 
           {/* Controls */}

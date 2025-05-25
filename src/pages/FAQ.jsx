@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Volume2, HelpCircle, Search } from 'lucide-react';
 import { useTranslation } from '../hooks/useTranslation';
 import { useTextToSpeech } from '../hooks/useTextToSpeech';
+import { useAppStore } from '../store/appStore';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 
@@ -11,6 +12,7 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const { speak } = useTextToSpeech();
+  const { setChatbotOpen } = useAppStore();
 
   const faqs = {
     en: [
@@ -282,7 +284,7 @@ const FAQ = () => {
                'Chat with our AI assistant or contact us directly'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button>
+              <Button onClick={() => setChatbotOpen(true)}>
                 {language === 'hi' ? 'AI से चैट करें' :
                  language === 'mr' ? 'AI शी चॅट करा' :
                  language === 'te' ? 'AI తో చాట్ చేయండి' :

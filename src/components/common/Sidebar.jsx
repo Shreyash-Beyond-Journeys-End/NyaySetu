@@ -5,10 +5,8 @@ import {
   Home, 
   HelpCircle, 
   Info, 
-  MessageSquare, 
-  Calculator, 
-  FileText, 
-  Phone,
+  MessageSquare,
+  Calculator,
   X
 } from 'lucide-react';
 import { useAppStore } from '../../store/appStore';
@@ -21,15 +19,10 @@ const Sidebar = () => {
 
   const menuItems = useMemo(() => [
     { path: '/', icon: Home, label: t('nav.home') },
+    { path: '/#calculator', icon: Calculator, label: t('calculator.title'), scrollTo: 'calculator-section' },
     { path: '/faq', icon: HelpCircle, label: t('nav.faq') },
     { path: '/about', icon: Info, label: t('nav.about') },
     { path: '/contact', icon: MessageSquare, label: t('nav.contact') }
-  ], [t, language]);
-
-  const toolItems = useMemo(() => [
-    { path: '/#calculator', icon: Calculator, label: t('calculator.title'), scrollTo: 'calculator-section' },
-    { path: '/#documents', icon: FileText, label: t('documents.title'), scrollTo: 'documents' },
-    { path: '/#emergency', icon: Phone, label: t('emergency.title'), scrollTo: 'emergency' }
   ], [t, language]);
 
   const sidebarVariants = {
@@ -122,22 +115,6 @@ const Sidebar = () => {
                       key={item.path}
                       item={item}
                       isActive={location.pathname === item.path}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Legal Tools */}
-              <div className="mb-8">
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                  Legal Tools
-                </h3>
-                <div className="space-y-2">
-                  {toolItems.map((item) => (
-                    <MenuItem
-                      key={item.path}
-                      item={item}
-                      isActive={false}
                     />
                   ))}
                 </div>
