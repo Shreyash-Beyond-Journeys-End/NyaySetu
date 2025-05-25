@@ -11,6 +11,11 @@
     "lint:fix": "eslint src --ext js,jsx --fix",
     "type-check": "tsc --noEmit"
   },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@tailwindcss/vite": "^4.1.7",
