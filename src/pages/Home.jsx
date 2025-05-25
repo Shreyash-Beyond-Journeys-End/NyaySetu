@@ -14,20 +14,22 @@ const Home = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen"
     >
-      {/* Smart Search Section (replaces hero) */}
-      <SmartSearch />
-      
-      {/* Features Grid */}
-      <FeaturesGrid />
-      
-      {/* Legal Rights Calculator */}
-      <LegalRightsCalculator />
-      
-      {/* Document Templates */}
-      <DocumentTemplates />
-      
-      {/* Emergency Contacts */}
-      <EmergencyContacts />
+      <div className="container-responsive">
+        {/* Smart Search Section (replaces hero) */}
+        <SmartSearch />
+        
+        {/* Features Grid */}
+        <FeaturesGrid />
+        
+        {/* Legal Rights Calculator */}
+        <LegalRightsCalculator />
+        
+        {/* Document Templates */}
+        <DocumentTemplates />
+        
+        {/* Emergency Contacts */}
+        <EmergencyContacts />
+      </div>
     </motion.div>
   );
 };

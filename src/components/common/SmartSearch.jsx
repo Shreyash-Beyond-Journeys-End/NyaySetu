@@ -9,6 +9,7 @@ import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useGemini } from '../../hooks/useGemini';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
+import { translateText } from '../../utils/translateText';
 
 const SmartSearch = () => {
   const { t } = useTranslation();
@@ -19,31 +20,30 @@ const SmartSearch = () => {
   const { speak } = useTextToSpeech();
   const { searchLegal, loading } = useGemini();
 
-  // Translate search results when they change or language changes
+  // Translate all dynamic fields when searchResults or language changes
   useEffect(() => {
-    if (searchResults && Object.keys(searchResults).length > 0) {
-      const translateResults = async () => {
-        try {
-          const translated = {
-            ...searchResults,
-            legalDomain: t(searchResults.legalDomain),
-            summary: searchResults.summary ? t(searchResults.summary) : '',
-            urgencyLevel: searchResults.urgencyLevel ? t(searchResults.urgencyLevel) : '',
-            possibleComplaints: searchResults.possibleComplaints?.map(complaint => t(complaint)) || [],
-            userRights: searchResults.userRights?.map(right => t(right)) || [],
-            relevantLaws: searchResults.relevantLaws?.map(law => t(law)) || [],
-            recommendedSteps: searchResults.recommendedSteps?.map(step => t(step)) || [],
-            additionalInfo: searchResults.additionalInfo ? t(searchResults.additionalInfo) : ''
-          };
-          setTranslatedResults(translated);
-        } catch (error) {
-          console.error('Translation error:', error);
-          setTranslatedResults(searchResults);
-        }
-      };
-      translateResults();
+    async function translateAllFields() {
+      if (!searchResults || Object.keys(searchResults).length === 0) {
+        setTranslatedResults(null);
+        return;
+      }
+      const tr = {};
+      // Translate string fields
+      for (const key of ['legalDomain', 'summary', 'urgencyLevel', 'additionalInfo']) {
+        tr[key] = searchResults[key]
+          ? await translateText(searchResults[key], language)
+          : '';
+      }
+      // Translate array fields
+      for (const key of ['possibleComplaints', 'userRights', 'relevantLaws', 'recommendedSteps']) {
+        tr[key] = Array.isArray(searchResults[key])
+          ? await Promise.all(searchResults[key].map(item => translateText(item, language)))
+          : [];
+      }
+      setTranslatedResults(tr);
     }
-  }, [searchResults, language, t]);
+    translateAllFields();
+  }, [searchResults, language]);
 
   React.useEffect(() => {
     if (transcript) {
@@ -80,10 +80,10 @@ const SmartSearch = () => {
     }
   };
 
-  // Use searchResults directly for display
-  const displayResults = searchResults;
-
-  console.log(t('features.ai_search_title'));
+  // Use translatedResults for display, fallback to searchResults if translation fails
+  const displayResults = translatedResults && Object.keys(translatedResults).length > 0
+    ? translatedResults
+    : (searchResults && Object.keys(searchResults).length > 0 ? searchResults : null);
 
   return (
     <section className="py-16 px-4">
@@ -253,32 +253,29 @@ const SmartSearch = () => {
               {/* Relevant Laws */}
               {Array.isArray(displayResults.relevantLaws) && displayResults.relevantLaws.length > 0 && (
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                     {t('search.relevantLaws')}
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {displayResults.relevantLaws.map((law, index) => (
-                      <div key={index} className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                        <span className="text-blue-800 dark:text-blue-200 font-medium">{law}</span>
-                      </div>
+                      <li key={index} className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-800 dark:text-blue-200 font-medium">
+                        {law}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </Card>
               )}
 
               {/* Recommended Steps */}
               {Array.isArray(displayResults.recommendedSteps) && displayResults.recommendedSteps.length > 0 && (
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                     {t('search.recommendedSteps')}
                   </h3>
-                  <ol className="space-y-3">
+                  <ol className="list-decimal list-inside space-y-2 pl-4">
                     {displayResults.recommendedSteps.map((step, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm mr-3 flex-shrink-0">
-                          {index + 1}
-                        </span>
-                        <span className="text-gray-700 dark:text-gray-300">{step}</span>
+                      <li key={index} className="text-gray-700 dark:text-gray-300">
+                        {step}
                       </li>
                     ))}
                   </ol>
