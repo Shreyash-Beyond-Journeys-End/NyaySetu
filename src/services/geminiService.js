@@ -1,7 +1,7 @@
 class GeminiService {
   constructor() {
     // Replace with your actual Gemini API key
-    this.apiKey = 'YOUR_ACTUAL_GEMINI_API_KEY_HERE';
+    this.apiKey = 'AIzaSyBdtC0uhXuNbCm9ieWnG_UGQPNI6Yxyuqs';
     this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
   }
 
@@ -61,14 +61,34 @@ Please structure your response in this exact JSON format (ensure it's valid JSON
   "additionalInfo": "Any additional important information"
 }
 
-Focus on Indian laws and constitution. Be accurate and helpful. Respond only with valid JSON.`;
+Focus on Indian laws and constitution. Be accurate and helpful. Respond only with valid JSON. Do not include any markdown formatting or code blocks.`;
 
       const response = await this.makeGeminiRequest(prompt);
       
       try {
         // Clean the response to ensure it's valid JSON
-        const cleanResponse = response.replace(/``````\n?/g, '').trim();
-        return JSON.parse(cleanResponse);
+        let cleanResponse = response
+          .replace(/```json\n?/g, '') // Remove JSON code block markers
+          .replace(/```\n?/g, '')     // Remove any remaining code block markers
+          .replace(/^\s*[\r\n]/gm, '') // Remove empty lines
+          .trim();
+        
+        // If the response starts with a newline or whitespace, remove it
+        cleanResponse = cleanResponse.replace(/^\s+/, '');
+        
+        // Parse the cleaned response
+        const parsedResponse = JSON.parse(cleanResponse);
+        
+        // Ensure all required fields are present and properly formatted
+        return {
+          legalDomain: parsedResponse.legalDomain || "General Legal Guidance",
+          possibleComplaints: Array.isArray(parsedResponse.possibleComplaints) ? parsedResponse.possibleComplaints : ["Legal consultation needed"],
+          relevantLaws: Array.isArray(parsedResponse.relevantLaws) ? parsedResponse.relevantLaws : ["Indian Constitution"],
+          userRights: Array.isArray(parsedResponse.userRights) ? parsedResponse.userRights : ["Right to legal representation"],
+          recommendedSteps: Array.isArray(parsedResponse.recommendedSteps) ? parsedResponse.recommendedSteps : ["Consult with a legal professional"],
+          urgencyLevel: ["low", "medium", "high"].includes(parsedResponse.urgencyLevel) ? parsedResponse.urgencyLevel : "medium",
+          additionalInfo: parsedResponse.additionalInfo || "Please consult with a legal professional for specific advice."
+        };
       } catch (parseError) {
         console.error('JSON parsing error:', parseError);
         // Fallback response
@@ -77,7 +97,7 @@ Focus on Indian laws and constitution. Be accurate and helpful. Respond only wit
           possibleComplaints: ["Legal consultation needed"],
           relevantLaws: ["Indian Constitution", "Relevant local laws"],
           userRights: ["Right to legal representation", "Right to fair trial"],
-          recommendedSteps: [response],
+          recommendedSteps: ["Please consult with a legal professional for specific advice"],
           urgencyLevel: "medium",
           additionalInfo: "Please consult with a legal professional for specific advice."
         };

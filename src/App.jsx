@@ -18,12 +18,32 @@ function App() {
 
   useEffect(() => {
     // Initialize theme
-    document.documentElement.setAttribute('data-theme', theme);
+    const root = document.documentElement;
+    const html = document.querySelector('html');
+    
+    // Set data-theme attribute
+    root.setAttribute('data-theme', theme);
+    
+    // Set dark class on html element
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+      html.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      html.classList.remove('dark');
     }
+
+    // Set color scheme meta tag
+    const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
+    if (metaColorScheme) {
+      metaColorScheme.setAttribute('content', theme);
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'color-scheme';
+      meta.content = theme;
+      document.head.appendChild(meta);
+    }
+
+    // Set body background color
+    document.body.style.backgroundColor = theme === 'dark' ? '#111827' : '#ffffff';
   }, [theme]);
 
   useEffect(() => {
@@ -33,7 +53,7 @@ function App() {
 
   return (
     <Router>
-      <div className="stable-layout bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-all duration-300">
+      <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-gray-900' : 'bg-white'} transition-colors duration-300`}>
         <Header />
         
         <motion.div 

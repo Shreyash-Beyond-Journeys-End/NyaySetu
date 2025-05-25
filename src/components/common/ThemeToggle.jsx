@@ -7,32 +7,46 @@ const ThemeToggle = () => {
   const { theme, setTheme } = useAppStore();
 
   useEffect(() => {
-    // Initialize theme on mount
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-  }, [setTheme]);
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      const systemTheme = e.matches ? 'dark' : 'light';
+      // Only update if user hasn't manually set a theme
+      if (!localStorage.getItem('theme')) {
+        setTheme(systemTheme);
+      }
+    };
 
-  useEffect(() => {
-    // Apply theme to document
-    document.documentElement.setAttribute('data-theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
+    
+    // Force update body class and background
+    const html = document.querySelector('html');
+    if (newTheme === 'dark') {
+      html.classList.add('dark');
+      document.body.style.backgroundColor = '#111827';
+    } else {
+      html.classList.remove('dark');
+      document.body.style.backgroundColor = '#ffffff';
+    }
   };
 
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+      className={`relative p-2 rounded-lg transition-colors ${
+        theme === 'light'
+          ? 'bg-gray-100 hover:bg-gray-200'
+          : 'bg-gray-700 hover:bg-gray-600'
+      }`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
       <motion.div
         initial={false}
